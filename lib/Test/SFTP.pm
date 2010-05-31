@@ -43,9 +43,8 @@ sub _build_object {
     my $self = shift;
     my %opts = ();
 
-    $self->debug    and $opts{'more'} = '-v';
-    # XXX: ssh_args currently disabled
-    #$self->ssh_args and $opts{
+    $self->debug    and $opts{'more'} = ['-v'];
+    $self->ssh_args and push @{ $opts{'more'} }, @{ $self->ssh_args };
 
     my $object = Net::SFTP::Foreign->new(
         host     => $self->host,
