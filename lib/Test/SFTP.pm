@@ -192,7 +192,11 @@ I<Test::SFTP> - An object to help test Net::SFTP
 
     $t_sftp->can_get( $remote_path, "Trying to get: $remote_path" );
 
-    $t_sftp->can_put( $local_path, $remote_path, "Trying to copy $local_path to $remote_path" );
+    $t_sftp->can_put(
+        $local_path,
+        $remote_path,
+        "Trying to copy $local_path to $remote_path",
+    );
 
 =head1 VERSION
 
@@ -200,13 +204,20 @@ This describes I<Test::SFTP> 0.04.
 
 =head1 DESCRIPTION
 
-Unlike most testing frameworks, I<Test::SFTP> provides an object oriented interface. The reason is that it's simply easier to use an object than throw the login information as command arguments each time. Maybe in time, there will be another interface that will accept login information through global package variables.
+Unlike most testing frameworks, I<Test::SFTP> provides an object oriented
+interface. The reason is that it's simply easier to use an object than throw the
+login information as command arguments each time. Maybe in time, there will be
+another interface that will accept login information through global package
+variables.
 
-I<Test::SFTP> uses I<Net::SFTP> for the SFTP functions. This is actually a testing framework for I<Net::SFTP>.
+I<Test::SFTP> uses I<Net::SFTP> for the SFTP functions. This is actually a
+testing framework for I<Net::SFTP>.
 
 =head1 ATTRIBUTES
 
-Basically there is almost complete corrolation with I<Net::SFTP> attributes, except for a few changes here and there. Since these are attributes, you can set all of these from the C<< $t_sftp->new() >> method.
+Basically there is almost complete corrolation with I<Net::SFTP> attributes,
+except for a few changes here and there. Since these are attributes, you can set
+all of these from the C<< $t_sftp->new() >> method.
 
     $t_sftp->new(
         host         => 'localhost',
@@ -233,23 +244,30 @@ Password for the username you're connecting with.
 
 =head2 $t_sftp->debug($boolean)
 
-Debugging flag for I<Net::SFTP>. Haven't used it yet, don't know if it will ever come in handy.
+Debugging flag for I<Net::SFTP>. Haven't used it yet, don't know if it will ever
+come in handy.
 
 =head2 $t_sftp->warn($boolean)
 
-Warning flag for I<Net::SFTP>. Haven't used it yet, don't know if it will ever come in handy.
+Warning flag for I<Net::SFTP>. Haven't used it yet, don't know if it will ever
+come in handy.
 
 =head2 $t_sftp->ssh_args( [ @args ] )
 
-SSH arguments, such as used in I<Net::SFTP>. These are actually for I<Net::SSH::Perl>.
+SSH arguments, such as used in I<Net::SFTP>. These are actually for
+I<Net::SSH::Perl>.
 
 =head2 $t_sftp->auto_connect($boolean)
 
-Some methods require a connection which is monitored by an internal attribute listed below. This method can alter that behavior, dictating that Test::SFTP should not issue a connection if it's not connected. The default is to issue a connection if C<< $t_sftp->connected >> returns false.
+Some methods require a connection which is monitored by an internal attribute
+listed below. This method can alter that behavior, dictating that Test::SFTP
+should not issue a connection if it's not connected. The default is to issue a
+connection if C<< $t_sftp->connected >> returns false.
 
 =head2 $t_sftp->timeout($seconds)
 
-When you want to make sure the login to SFTP won't hang, you can set a timeout. However, it applies to the login only, and not to any other method.
+When you want to make sure the login to SFTP won't hang, you can set a timeout.
+However, it applies to the login only, and not to any other method.
 
 =head2 Sensitive Attributes
 
@@ -259,15 +277,23 @@ When you want to make sure the login to SFTP won't hang, you can set a timeout. 
 
 A boolean attribute to note whether the I<Net::SFTP> object is connected.
 
-Most methods used need the object to be connected. This attribute is used internally to check if it's not connected yet, and if it isn't, it will run the connect method again in order to connect. This behavior can be altered using the previous attribute C<< $t_sftp->auto_connect >>.
+Most methods used need the object to be connected. This attribute is used
+internally to check if it's not connected yet, and if it isn't, it will run the
+connect method again in order to connect. This behavior can be altered using the
+previous attribute C<< $t_sftp->auto_connect >>.
 
 =item C<< $t_sftp->object($object) >>
 
-This holds the object of I<Net::SFTP>. It's there to allow users more fingergrain access to the object. With that, you can do:
+This holds the object of I<Net::SFTP>. It's there to allow users more
+fingergrain access to the object. With that, you can do:
 
-    is( $t_sftp->object->do_read( ... ), 'Specific test not covered in the framework' );
+    is(
+        $t_sftp->object->do_read( ... ),
+        'Specific test not covered in the framework',
+    );
 
-You can change this to a different object you want to use instead of I<Net::SFTP>, but the API should be as close to it as possible. Goodluck!
+You can change this to a different object you want to use instead of
+I<Net::SFTP>, but the API should be as close to it as possible. Goodluck!
 
 =back
 
@@ -275,27 +301,34 @@ You can change this to a different object you want to use instead of I<Net::SFTP
 
 =head2 $t_sftp->connect
 
-Test::SFTP does not connect when it's created. You should explicitly connect using:
+Test::SFTP does not connect when it's created. You should explicitly connect
+using:
 
     $t_sftp->connect
 
 Then you could use the available testing methods described below.
 
-If the auto_connect attribute (which is set by default) is on, it will connect as soon as a testing method is used and it finds out it isn't connected already.
+If the auto_connect attribute (which is set by default) is on, it will connect
+as soon as a testing method is used and it finds out it isn't connected already.
 
 =head2 $t_sftp->can_connect($test_name)
 
-Checks whether we were able to connect to the machine. It basically runs the connect method, but checks if it was successful with a test name.
+Checks whether we were able to connect to the machine. It basically runs the
+connect method, but checks if it was successful with a test name.
 
 =head2 $t_sftp->cannot_connect($test_name)
 
-Checks whether we were NOT able to connect to the machine. Runs the connect method adn checks if it unsuccessful with a test name.
+Checks whether we were NOT able to connect to the machine. Runs the connect
+method adn checks if it unsuccessful with a test name.
 
 =head2 $t_sftp->is_status( "$number $string" , $test_name )
 
-Checks the status of I<Net::SFTP>. It's the same as C<< is( "$expected_number $expected_string", Test::SFTP->object->status, 'testing the status returned by Net::SFTP) >>.
+Checks the status of I<Net::SFTP>. It's the same as
+C<< is( "$expected_number $expected_string", Test::SFTP->object->status,
+'testing the status returned by Net::SFTP) >>.
 
-This returns the entire string back. It joins both the error number and the FX2TXT, joined by a space character.
+This returns the entire string back. It joins both the error number and the
+FX2TXT, joined by a space character.
 
 =head2 $t_sftp->is_status_number( $number, $test_name )
 
@@ -323,11 +356,13 @@ Checks whether we're unable to upload a file.
 
 =head2 $t_sftp->can_ls( $filename, $test_name )
 
-Checks whether we're able to ls a folder or file. Can be used to check the existence of files or folders.
+Checks whether we're able to ls a folder or file. Can be used to check the
+existence of files or folders.
 
 =head2 $t_sftp->cannot_ls( $filename, $test_name )
 
-Checks whether we're unable to ls a folder or file. Can be used to check the nonexistence of files or folders.
+Checks whether we're unable to ls a folder or file. Can be used to check the
+nonexistence of files or folders.
 
 =head1 DEPENDENCIES
 
@@ -347,23 +382,34 @@ You can use the B<object> attribute to access the I<Net::SFTP> object directly.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Some tests in the module require creating and removing files. As long as we don't have complete control over the environment we're going to connect to, it's hard to know if we're gonna upload a file that perhaps already exists already. We try hard to avoid it by creating a file with a random number as the filename.
+Some tests in the module require creating and removing files. As long as we
+don't have complete control over the environment we're going to connect to, it's
+hard to know if we're gonna upload a file that perhaps already exists already.
+We try hard to avoid it by creating a file with a random number as the filename.
 
-So, in previous versions (actually, only 1), these tests were mixed with all the other tests so if you had set the environment variable to testing, it would test it with everything. If you don't, it would not test a bunch of other tests that aren't dangerous at all.
+So, in previous versions (actually, only 1), these tests were mixed with all the
+other tests so if you had set the environment variable to testing, it would test
+it with everything. If you don't, it would not test a bunch of other tests that
+aren't dangerous at all.
 
-To ask for this to be tested as well, set the environment variable TEST_SFTP_DANG.
+To ask for this to be tested as well, set the environment variable
+TEST_SFTP_DANG.
 
 =head1 INCOMPATIBILITIES
 
-This module should be incompatible with taint (-T), because it use I<Net::SFTP> that utilizes I<Net::SSH::Perl> that does not pass tainted mode.
+This module should be incompatible with taint (-T), because it use I<Net::SFTP>
+that utilizes I<Net::SSH::Perl> that does not pass tainted mode.
 
 =head1 BUGS AND LIMITATIONS
 
-This module will have the same limitations that exist for I<Net::SFTP>. Perhaps more.
+This module will have the same limitations that exist for I<Net::SFTP>. Perhaps
+more.
 
-Please report any bugs or feature requests to C<bug-test-sftp at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Test-SFTP>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
+Please report any bugs or feature requests to C<bug-test-sftp at rt.cpan.org>,
+or through the web interface at
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Test-SFTP>.  I will be
+notified, and then you'll automatically be notified of progress on your bug as I
+make changes.
 
 =head1 SUPPORT
 
