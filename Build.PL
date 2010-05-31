@@ -22,6 +22,7 @@ my $builder = Module::Build->new(
         'Test::Builder'        => 0,
         'Moose'                => 0.63,
         'Net::SFTP'            => 0.10,
+        'Net::SFTP::Foreign'   => 0,
         'namespace::autoclean' => 0,
     },
 
