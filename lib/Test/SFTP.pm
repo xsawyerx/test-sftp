@@ -2,16 +2,21 @@ package Test::SFTP;
 
 use warnings;
 
+use Carp;
 use Moose;
 use English '-no_match_vars';
-use Net::SFTP;
+use Net::SFTP::Foreign;
+#use Net::SFTP;
 use Test::More;
+use Test::Builder;
 use namespace::autoclean;
 
 our $VERSION = '0.04';
 
+use parent 'Test::Builder::Module';
+
 # variables for the connection
-has 'host'     => ( is => 'rw', isa => 'Str' );
+has 'host'     => ( is => 'rw', isa => 'Str', required => 1 );
 has 'user'     => ( is => 'rw', isa => 'Str' );
 has 'password' => ( is => 'rw', isa => 'Str' );
 
@@ -22,63 +27,45 @@ has 'ssh_args' => ( is => 'rw', isa => 'ArrayRef|HashRef' );
 
 # this holds the object itself. that way, users can do:
 # $t_sftp->object->get() in a raw manner if they want
-has 'object'       => ( is => 'rw', isa => 'Object' );
+has 'object' => (
+    is         => 'rw',
+    isa        => 'Net::SFTP::Foreign',
+    lazy_build => 1,
+);
+
 has 'connected'    => ( is => 'rw', isa => 'Bool', default => 0 );
 has 'auto_connect' => ( is => 'rw', isa => 'Bool', default => 1 );
 
 has 'timeout' => ( is => 'rw', isa => 'Int', default => 10 );
 
-sub connect {
+sub _build_object {
+    my $self = shift;
+    my %opts = ();
+
+    $self->debug    and $opts{'more'} = '-v';
+    # XXX: ssh_args currently disabled
+    #$self->ssh_args and $opts{
+
+    my $object = Net::SFTP::Foreign->new(
+        host     => $self->host,
+        user     => $self->user,
+        password => $self->password,
+        timeout  => $self->timeout,
+        %opts,
+    );
+
+    $object->error and croak 'SFTP failed: ' . $object->error;
+
+    return $object;
+}
+
+sub BUILD {
     my $self  = shift;
     my $EMPTY = q{};
 
-    foreach my $attribute ( qw( host user password ) ) {
-        if ( !$self->$attribute ) {
-            diag("You're missing an attribute: " . $attribute);
-            $self->connected(0);
-            return 0;
-        }
-    }
+    $self->object;
 
-    my $eval_return = eval {
-        local $SIG{'ALRM'} = sub {
-            die "sftp failed\n";
-        };
-
-        alarm $self->timeout;
-
-        # create the object and store it
-        $self->object(
-            Net::SFTP->new(
-                $self->host,
-                'user'     => $self->user,
-                'password' => $self->password,
-                'debug'    => $self->debug,
-                'warn'     => $self->warn,
-                'ssh_args' => $self->ssh_args,
-            )
-        );
-
-        # clear the alarm
-        alarm 0;
-
-        1;
-    };
-
-    if ( !defined $eval_return ) {
-        $eval_return = $EMPTY;
-    }
-
-    if ( $eval_return eq "sftp failed\n" ) {
-        diag("SFTP connection failed");
-        $self->connected(0);
-        return 0;
-    }
-
-    # make sure the connection flag is set right
-    $self->connected( $eval_return ? 1 : 0 );
-
-    return $self->connected;
+    $self->connected(1);
 }
 
 sub can_connect {
