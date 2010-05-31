@@ -1,5 +1,8 @@
 Organized according to how soon I think I will implement these.
 
+** REWRITE **
+    - Add port option
+
 * Upcoming versions:
     - Add testing for can_get and cannot_get using $remote_path as well
     - Check if we're uploading a file to where it really is right now, if so - prevent it
