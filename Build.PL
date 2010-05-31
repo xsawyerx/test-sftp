@@ -1,0 +1,28 @@
+use 5.006;
+use strict;
+use warnings;
+use Module::Build;
+
+my $builder = Module::Build->new(
+    module_name         => 'Test::SFTP',
+    license             => 'perl',
+    dist_author         => q{Sawyer X <xsawyerx@cpan.org>},
+    dist_version_from   => 'lib/Test/SFTP.pm',
+    build_requires => {
+        'Test::More' => 0,
+        'IO::Prompt' => '0.99.4',
+        'English'    => 1.02,
+    },
+
+    requires => {
+        'perl'       => 5.006,
+        'Test::More' => 0.78,
+        'Moose'      => 0.63,
+        'Net::SFTP'  => 0.10,
+    },
+
+    add_to_cleanup      => [ 'Test-SFTP-*' ],
+    create_makefile_pl => 'traditional',
+);
+
+$builder->create_build_script();

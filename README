@@ -1,0 +1,226 @@
+NAME
+    *Test::SFTP* - An object to help test Net::SFTP
+
+SYNOPSIS
+        use Test::SFTP;
+
+        my $t_sftp = Test::SFTP->new(
+            host     => 'localhost',
+            user     => 'sawyer',
+            password => '2o7U!OYv',
+            ...
+        );
+
+        $t_sftp->can_get( $remote_path, "Trying to get: $remote_path" );
+
+        $t_sftp->can_put( $local_path, $remote_path, "Trying to copy $local_path to $remote_path" );
+
+VERSION
+    This describes *Test::SFTP* 0.02.
+
+DESCRIPTION
+    Unlike most testing frameworks, *Test::SFTP* provides an object oriented
+    interface. The reason is that it's simply easier to use an object than
+    throw the login information as command arguments each time. Maybe in
+    time, there will be another interface that will accept login information
+    through global package variables.
+
+    *Test::SFTP* uses *Net::SFTP* for the SFTP functions. This is actually a
+    testing framework for *Net::SFTP*.
+
+ATTRIBUTES
+    Basically there is almost complete corrolation with *Net::SFTP*
+    attributes, except for a few changes here and there. Since these are
+    attributes, you can set all of these from the "$t_sftp->new()" method.
+
+        $t_sftp->new(
+            host         => 'localhost',
+            user         => 'root'
+            password     => 'p455w0rdZ'
+            debug        => 1     # default: 0
+            warn         => 1     # default: 0
+            ssh_args     => [ qw( PreferredAuthentications password ) ]
+            auto_connect => 0     # default: 1
+            timeout      => 10    # 10 seconds timeout for the connection
+        );
+
+  $t_sftp->host($host)
+    The host you're connecting to.
+
+  $t_sftp->user($username)
+    Username you're connecting with.
+
+  $t_sftp->password($password)
+    Password for the username you're connecting with.
+
+  $t_sftp->debug($boolean)
+    Debugging flag for *Net::SFTP*. Haven't used it yet, don't know if it
+    will ever come in handy.
+
+  $t_sftp->warn($boolean)
+    Warning flag for *Net::SFTP*. Haven't used it yet, don't know if it will
+    ever come in handy.
+
+  $t_sftp->ssh_args( [ @args ] )
+    SSH arguments, such as used in *Net::SFTP*. These are actually for
+    *Net::SSH::Perl*.
+
+  $t_sftp->auto_connect($boolean)
+    Some methods require a connection which is monitored by an internal
+    attribute listed below. This method can alter that behavior, dictating
+    that Test::SFTP should not issue a connection if it's not connected. The
+    default is to issue a connection if "$t_sftp->connected" returns false.
+
+  $t_sftp->timeout($seconds)
+    When you want to make sure the login to SFTP won't hang, you can set a
+    timeout. However, it applies to the login only, and not to any other
+    method.
+
+  Sensitive Attributes
+    "$t_sftp->connected($boolean)"
+        A boolean attribute to note whether the *Net::SFTP* object is
+        connected.
+
+        Most methods used need the object to be connected. This attribute is
+        used internally to check if it's not connected yet, and if it isn't,
+        it will run the connect method again in order to connect. This
+        behavior can be altered using the previous attribute
+        "$t_sftp->auto_connect".
+
+    "$t_sftp->object($object)"
+        This holds the object of *Net::SFTP*. It's there to allow users more
+        fingergrain access to the object. With that, you can do:
+
+            is( $t_sftp->object->do_read( ... ), 'Specific test not covered in the framework' );
+
+        You can change this to a different object you want to use instead of
+        *Net::SFTP*, but the API should be as close to it as possible.
+        Goodluck!
+
+SUBROUTINES/METHODS
+  $t_sftp->connect
+    Test::SFTP does not connect when it's created. You should explicitly
+    connect using:
+
+        $t_sftp->connect
+
+    Then you could use the available testing methods described below.
+
+    If the auto_connect attribute (which is set by default) is on, it will
+    connect as soon as a testing method is used and it finds out it isn't
+    connected already.
+
+  $t_sftp->can_connect($test_name)
+    Checks whether we were able to connect to the machine. It basically runs
+    the connect method, but checks if it was successful with a test name.
+
+  $t_sftp->cannot_connect($test_name)
+    Checks whether we were NOT able to connect to the machine. Runs the
+    connect method adn checks if it unsuccessful with a test name.
+
+  $t_sftp->is_status( "$number $string" , $test_name )
+    Checks the status of *Net::SFTP*. It's the same as "is(
+    "$expected_number $expected_string", Test::SFTP->object->status,
+    'testing the status returned by Net::SFTP)".
+
+    This returns the entire string back. It joins both the error number and
+    the FX2TXT, joined by a space character.
+
+  $t_sftp->is_status_number( $number, $test_name )
+    Returns the status number, the first part of the whole status.
+
+  $t_sftp->is_status_string( $string, $test_name )
+    Returns the FX2TXT part of the status.
+
+  $t_sftp->can_get( $filename, $test_name )
+    Checks whether we're able to get a file.
+
+  $t_sftp->cannot_get( $filename, $test_name )
+    Checks whether we're unable to get a file.
+
+  $t_sftp->can_put( $filename, $test_name )
+    Checks whether we're able to upload a file.
+
+  $t_sftp->cannot_put( $filename, $test_name )
+    Checks whether we're unable to upload a file.
+
+  $t_sftp->can_ls( $filename, $test_name )
+    Checks whether we're able to ls a folder or file. Can be used to check
+    the existence of files or folders.
+
+  $t_sftp->cannot_ls( $filename, $test_name )
+    Checks whether we're unable to ls a folder or file. Can be used to check
+    the nonexistence of files or folders.
+
+DEPENDENCIES
+    <http://search.cpan.org/perldoc?Moose>
+
+    <http://search.cpan.org/perldoc?Net::SFTP>
+
+    <http://search.cpan.org/perldoc?Test::More>
+
+AUTHOR
+    Sawyer X, "<xsawyerx at cpan.org>"
+
+DIAGNOSTICS
+    You can use the object attribute to access the *Net::SFTP* object
+    directly.
+
+CONFIGURATION AND ENVIRONMENT
+    Some tests in the module require creating and removing files. As long as
+    we don't have complete control over the environment we're going to
+    connect to, it's hard to know if we're gonna upload a file that perhaps
+    already exists already. We try hard to avoid it by creating a file with
+    a random number as the filename.
+
+    So, in previous versions (actually, only 1), these tests were mixed with
+    all the other tests so if you had set the environment variable to
+    testing, it would test it with everything. If you don't, it would not
+    test a bunch of other tests that aren't dangerous at all.
+
+    To ask for this to be tested as well, set the environment variable
+    TEST_SFTP_DANG.
+
+INCOMPATIBILITIES
+    This module should be incompatible with taint (-T), because it use
+    *Net::SFTP* that utilizes *Net::SSH::Perl* that does not pass tainted
+    mode.
+
+BUGS AND LIMITATIONS
+    This module will have the same limitations that exist for *Net::SFTP*.
+    Perhaps more.
+
+    Please report any bugs or feature requests to "bug-test-sftp at
+    rt.cpan.org", or through the web interface at
+    <http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Test-SFTP>. I will be
+    notified, and then you'll automatically be notified of progress on your
+    bug as I make changes.
+
+SUPPORT
+    You can find documentation for this module with the perldoc command.
+
+        perldoc Test::SFTP
+
+    You can also look for information at:
+
+    * RT: CPAN's request tracker
+        <http://rt.cpan.org/NoAuth/Bugs.html?Dist=Test-SFTP>
+
+    * AnnoCPAN: Annotated CPAN documentation
+        <http://annocpan.org/dist/Test-SFTP>
+
+    * CPAN Ratings
+        <http://cpanratings.perl.org/d/Test-SFTP>
+
+    * Search CPAN
+        <http://search.cpan.org/dist/Test-SFTP/>
+
+ACKNOWLEDGEMENTS
+    Dave Rolsky and David Robins for maintaining *Net::SFTP*.
+
+LICENSE AND COPYRIGHT
+    Copyright 2009 Sawyer X, all rights reserved.
+
+    This program is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+
