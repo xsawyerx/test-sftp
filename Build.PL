@@ -15,10 +15,11 @@ my $builder = Module::Build->new(
     },
 
     requires => {
-        'perl'       => 5.006,
-        'Test::More' => 0.78,
-        'Moose'      => 0.63,
-        'Net::SFTP'  => 0.10,
+        'perl'                 => 5.006,
+        'Test::More'           => 0.78,
+        'Moose'                => 0.63,
+        'Net::SFTP'            => 0.10,
+        'namespace::autoclean' => 0,
     },
 
     add_to_cleanup      => [ 'Test-SFTP-*' ],

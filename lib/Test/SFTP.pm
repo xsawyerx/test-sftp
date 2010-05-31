@@ -6,6 +6,7 @@ use Moose;
 use English '-no_match_vars';
 use Net::SFTP;
 use Test::More;
+use namespace::autoclean;
 
 our $VERSION = '0.04';
 
@@ -167,6 +168,8 @@ sub cannot_ls {
     ok( !$eval_error, $test );
     return 0;
 }
+
+no Moose;
 
 1;
 
