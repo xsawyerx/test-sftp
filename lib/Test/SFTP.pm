@@ -1,5 +1,6 @@
 package Test::SFTP;
 
+use strict;
 use warnings;
 
 use Carp;
@@ -54,7 +55,7 @@ sub _build_object {
         %opts,
     );
 
-    $object->error and croak 'SFTP failed: ' . $object->error;
+    $object->error ? $self->connected(0) : $self->connected(1);
 
     return $object;
 }
@@ -62,10 +63,7 @@ sub _build_object {
 sub BUILD {
     my $self  = shift;
     my $EMPTY = q{};
-
     $self->object;
-
-    $self->connected(1);
 }
 
 sub can_connect {
