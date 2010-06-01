@@ -44,15 +44,20 @@ sub _build_object {
     my @more = ();
     my %opts = ();
 
-    $self->more  and push @more, @{ $self->more };
-    $self->debug and push @more, '-v';
+    $self->user     and $opts{'user'}     = $self->user;
+    $self->password and $opts{'password'} = $self->password;
+    $self->more     and push @more, @{ $self->more };
+    $self->debug    and push @more, '-v';
+
+    if ( my $timeout = $self->timeout ) {
+        $opts{'timeout'} = $timeout;
+        push @more, '-o', "ConnectTimeout=$timeout";
+    }
 
     my $object = Net::SFTP::Foreign->new(
-        host     => $self->host,
-        user     => $self->user,
-        password => $self->password,
-        timeout  => $self->timeout,
-        more     => \@more,
+        host => $self->host,
+        more => \@more,
+        %opts,
     );
 
     $object->error ? $self->connected(0) : $self->connected(1);
