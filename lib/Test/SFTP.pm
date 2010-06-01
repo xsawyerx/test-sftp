@@ -17,12 +17,12 @@ our $VERSION = '0.04';
 use parent 'Test::Builder::Module';
 
 # variables for the connection
-has 'host'     => ( is => 'rw', isa => 'Str', required => 1 );
-has 'user'     => ( is => 'rw', isa => 'Str' );
-has 'password' => ( is => 'rw', isa => 'Str' );
+has 'host'     => ( is => 'ro', isa => 'Str', required => 1 );
+has 'user'     => ( is => 'ro', isa => 'Str' );
+has 'password' => ( is => 'ro', isa => 'Str' );
 
-has 'debug' => ( is => 'rw', isa => 'Int', default => 0 );
-has 'warn'  => ( is => 'rw', isa => 'Int', default => 0 );
+has 'debug' => ( is => 'ro', isa => 'Int', default => 0 );
+has 'warn'  => ( is => 'ro', isa => 'Int', default => 0 );
 
 has 'ssh_args' => ( is => 'rw', isa => 'ArrayRef|HashRef' );
 
@@ -37,7 +37,7 @@ has 'object' => (
 has 'connected'    => ( is => 'rw', isa => 'Bool', default => 0 );
 has 'auto_connect' => ( is => 'rw', isa => 'Bool', default => 1 );
 
-has 'timeout' => ( is => 'rw', isa => 'Int', default => 10 );
+has 'timeout'      => ( is => 'ro', isa => 'Int' );
 
 sub _build_object {
     my $self = shift;
