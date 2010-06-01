@@ -14,8 +14,6 @@ SKIP: {
         skip 'Test::Timer not installed', 1;
     }
 
-    my $SPACE    = q{ };
-    my $EMPTY    = q{};
     my $timeout  = 3;
     my $host     = '1.2.3.4'; # lets hope no one uses it by accident
     my $username = 'user';
@@ -27,9 +25,10 @@ SKIP: {
             user     => $username,
             password => $password,
             timeout  => $timeout,
-        )->connect },
+            ssh_args => [ '-o', "ConnectTimeout=$timeout" ],
+        ) },
         $timeout,
-        $timeout + 3,
+        $timeout + 1,
         'Timeout is working',
     );
 };
