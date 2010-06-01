@@ -24,7 +24,7 @@ has 'password' => ( is => 'ro', isa => 'Str' );
 has 'debug' => ( is => 'ro', isa => 'Int', default => 0 );
 has 'warn'  => ( is => 'ro', isa => 'Int', default => 0 );
 
-has 'ssh_args' => ( is => 'rw', isa => 'ArrayRef|HashRef' );
+has 'more' => ( is => 'rw', isa => 'ArrayRef' );
 
 # this holds the object itself. that way, users can do:
 # $t_sftp->object->get() in a raw manner if they want
@@ -41,17 +41,18 @@ has 'timeout'      => ( is => 'ro', isa => 'Int' );
 
 sub _build_object {
     my $self = shift;
+    my @more = ();
     my %opts = ();
 
-    $self->debug    and $opts{'more'} = ['-v'];
-    $self->ssh_args and push @{ $opts{'more'} }, @{ $self->ssh_args };
+    $self->more  and push @more, @{ $self->more };
+    $self->debug and push @more, '-v';
 
     my $object = Net::SFTP::Foreign->new(
         host     => $self->host,
         user     => $self->user,
         password => $self->password,
         timeout  => $self->timeout,
-        %opts,
+        more     => \@more,
     );
 
     $object->error ? $self->connected(0) : $self->connected(1);
@@ -211,7 +212,7 @@ all of these from the C<< $t_sftp->new() >> method.
         password     => 'p455w0rdZ'
         debug        => 1     # default: 0
         warn         => 1     # default: 0
-        ssh_args     => [ qw( PreferredAuthentications password ) ]
+        more         => [ qw( -o PreferredAuthentications=password ) ]
         auto_connect => 0     # default: 1
         timeout      => 10    # 10 seconds timeout for the connection
     );
@@ -238,7 +239,7 @@ come in handy.
 Warning flag for I<Net::SFTP>. Haven't used it yet, don't know if it will ever
 come in handy.
 
-=head2 $t_sftp->ssh_args( [ @args ] )
+=head2 $t_sftp->more( [ @args ] )
 
 SSH arguments, such as used in I<Net::SFTP>. These are actually for
 I<Net::SSH::Perl>.
