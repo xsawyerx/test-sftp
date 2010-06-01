@@ -73,15 +73,15 @@ sub BUILD {
 
 sub can_connect {
     my ( $self, $test ) = @_;
-    $self->connect();
-    ok( not $self->error, $test );
+    $self->object( $self->_build_object );
+    ok( not $self->object->error, $test );
     return 0;
 }
 
 sub cannot_connect {
     my ( $self, $test ) = @_;
-    $self->connect;
-    ok( $self->error, $test );
+    $self->object( $self->_build_object );;
+    ok( $self->object->error, $test );
     return 0;
 }
 
