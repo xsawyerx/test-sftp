@@ -21,14 +21,12 @@ SKIP: {
 
     time_between( sub {
         Test::SFTP->new(
-            host     => $host,
-            user     => $username,
-            password => $password,
-            timeout  => $timeout,
-            ssh_args => [ '-o', "ConnectTimeout=$timeout" ],
+            host    => $host,
+            timeout => $timeout,
         ) },
+
         $timeout,
-        $timeout + 1,
+        $timeout * 2,
         'Timeout is working',
     );
 };
