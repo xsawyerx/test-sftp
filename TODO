@@ -2,6 +2,7 @@ Organized according to how soon I think I will implement these.
 
 ** REWRITE **
     - Add port option
+    - Update POD
 
 * Upcoming versions:
     - Add testing for can_get and cannot_get using $remote_path as well
