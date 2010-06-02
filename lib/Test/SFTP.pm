@@ -6,9 +6,8 @@ use warnings;
 use Carp;
 use Moose;
 use English '-no_match_vars';
-use Net::SFTP::Foreign;
-use Test::More;
 use Test::Builder;
+use Net::SFTP::Foreign;
 use namespace::autoclean;
 
 use parent 'Test::Builder::Module';
