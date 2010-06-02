@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use English '-no_match_vars';
-use Test::More tests => 14;
+use Test::More tests => 11;
 use Test::SFTP;
 use Term::ReadLine;
 use Term::ReadPassword;
@@ -55,7 +55,6 @@ SKIP: {
         $prompt = $term->readline("Username [$username]: ");
         $prompt and $username = $prompt;
 
-        # <3 IO::Prompt
         $password = read_password('Password: ');
 
         my $sftp = Test::SFTP->new(
@@ -68,14 +67,10 @@ SKIP: {
         $sftp->can_connect('can connect to SFTP');
         is( $sftp->connected, 1, 'we are really connected' );
 
-        ( $status_number, $status_string ) = ( '0', 'No error' );
-        $full_status = join $SPACE, $status_number, $status_string;
+        $status_number = 0;
 
-        $sftp->is_status( $full_status, 'Checking SFTP no error complete status' );
-        $sftp->is_status_number( $status_number, 'Checking SFTP no error status number' );
-        $sftp->is_status_string( $status_string, 'Checking SFTP no error status string' );
-
-        srand;
+        $sftp->is_status( $status_number, 'Checking SFTP status number' );
+        $sftp->is_error(  $status_number, 'Checking SFTP error status'  );
 
         SKIP: {
             if ( $ENV{'TEST_SFTP_DANG'} ) {
@@ -94,10 +89,11 @@ SKIP: {
             $file_util->touch($random_file);
 
             $sftp->can_put( $random_file, $random_file, 'Trying to upload to good location' );
-            $sftp->can_get( $random_file, 'Trying to get a file' );
+            print "Trying to get $random_file\n";
+            $sftp->can_get( $random_file, '.', 'Trying to get a file' );
 
             # this is dangerous, we need to finish some stuff before allowing people to run all these tests
-            $sftp->object->do_remove( $random_file );
+            $sftp->object->remove( $random_file );
 
             # we do not need this file anymore
             # TODO: if in the process of getting a file we overwritten that file, we will be accidently removing it
@@ -113,15 +109,10 @@ SKIP: {
         $sftp->cannot_ls( $bad_path, 'Trying to fail ls' );
 
         $sftp->cannot_put( $random_file, $bad_path, 'Trying to upload to bad location'  );
-        $sftp->cannot_get( $bad_path, 'Trying to get a nonexistent file' );
+        $sftp->cannot_get( $bad_path, '/', 'Trying to get a nonexistent file' );
 
-        ( $status_number, $status_string ) = ( '2', 'No such file or directory' );
-        $full_status = join $SPACE, $status_number, $status_string;
-
+        $full_status = 'No such file';
         $sftp->is_status( $full_status, 'Checking SFTP nonexistent path complete status' );
-        $sftp->is_status_number( $status_number, 'Checking nonexistent path SFTP status number' );
-        $sftp->is_status_string( $status_string, 'Checking nonexistent path SFTP status string' );
-
     }
 }
 
