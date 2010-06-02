@@ -6,7 +6,8 @@
 use English '-no_match_vars';
 use Test::More tests => 14;
 use Test::SFTP;
-use IO::Prompt;
+use Term::ReadLine;
+use Term::ReadPassword;
 
 use strict;
 use warnings;
@@ -22,6 +23,7 @@ SKIP: {
     my $timeout  = 10;
     my $host     = 'localhost';
     my $username = getpwuid $REAL_USER_ID || $EMPTY;
+    my $term     = Term::ReadLine->new('test_term');
 
     my ( $password, $test, $prompt );
     my ( $full_status, $status_number, $status_string );
@@ -34,12 +36,12 @@ SKIP: {
 
             alarm $timeout;
 
-            print STDERR "\nI need your help for some tests.\n"
-                       . "Enter 'q' to quit the tests, "
-                       . "or wait $timeout seconds for me to just continue without testing\n"
-                       . "You can press [enter] if you want to "
-                       . "help me with this and test the test module\n";
-            $test = prompt 'So? ';
+            print STDERR "\nI need your help for some tests.\n"              .
+                         "Enter 'q' to quit the tests, or wait $timeout "    .
+                         "seconds for me to just continue without testing\n" .
+                         "You can press [enter] if you want to help me with" .
+                         " this and test this module\n";
+            $test = $term->readline('So? ');
             chomp $test;
 
             alarm 0;
@@ -49,19 +51,19 @@ SKIP: {
             skip "Alright, nevermind...\n", 14;
         }
 
-        $prompt = prompt "SSH/SFTP host to test [$host]: ";
-        $prompt->{'value'} && ( $host = $prompt->{'value'} );
+        $prompt = $term->readline("SSH/SFTP host to test [$host]: ");
+        $prompt and $host = $prompt;
 
-        $prompt = prompt "Username [$username]: ";
-        $prompt->{'value'} && ( $username = $prompt->{'value'} );
+        $prompt = $term->readline("Username [$username]: ");
+        $prompt and $username = $prompt;
 
         # <3 IO::Prompt
-        $password = prompt ( "Password: ", '-e'=>'*' );
+        $password = read_password('Password: ');
 
         my $sftp = Test::SFTP->new(
             host     => $host,
             user     => $username,
-            password => $password->{'value'},
+            password => $password,
             timeout  => 2,
         );
 
