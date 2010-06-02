@@ -12,7 +12,7 @@ use namespace::autoclean;
 
 use parent 'Test::Builder::Module';
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 # variables for the connection
 has 'host'     => ( is => 'ro', isa => 'Str', required => 1 );
@@ -187,7 +187,7 @@ I<Test::SFTP> - An object to help test Net::SFTP
 
 =head1 VERSION
 
-This describes I<Test::SFTP> 0.04.
+This describes I<Test::SFTP> 0.05.
 
 =head1 DESCRIPTION
 
