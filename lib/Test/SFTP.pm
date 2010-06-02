@@ -88,26 +88,18 @@ sub cannot_connect {
     $tb->ok( $self->object->error, $test );
 }
 
+sub is_error {
+    my ( $self, $error, $test ) = @_;
+    my $tb = $CLASS->builder;
+
+    $tb->is_eq( $self->object->error, $error, $test );
+}
+
 sub is_status {
     my ( $self, $status, $test ) = @_;
-    my $tb    = $CLASS->builder;
-    my $SPACE = q{ };
-
-    is( ( join $SPACE, ( $self->object->status ) ), $status, $test );
-}
-
-sub is_status_number {
-    my ( $self, $status, $test ) = @_;
     my $tb = $CLASS->builder;
 
-    is( ( $self->object->status )[0], $status, $test );
-}
-
-sub is_status_string {
-    my ( $self, $status, $test ) = @_;
-    my $tb = $CLASS->builder;
-
-    is( ( $self->object->status )[1], $status, $test );
+    $tb->is_eq( $self->object->status, $status, $test );
 }
 
 sub can_get {
@@ -117,12 +109,7 @@ sub can_get {
 
     $self->connected || $self->connect;
 
-    if ($test) {
-        ok( $self->object->get( $local, $remote ) eq $EMPTY, $test );
-    } else {
-        $test = $remote;
-        ok( $self->object->get($local) eq $EMPTY, $test );
-    }
+    $tb->ok( $self->object->get( $local, $remote ), $test );
 }
 
 sub cannot_get {
@@ -131,12 +118,7 @@ sub cannot_get {
 
     $self->connected || $self->connect;
 
-    if ($test) {
-        ok( !$self->object->get( $local, $remote ), $test );
-    } else {
-        $test = $remote;
-        ok( !$self->object->get($local), $test );
-    }
+    $tb->ok( !$self->object->get( $local, $remote ), $test );
 }
 
 sub can_put {
@@ -146,7 +128,7 @@ sub can_put {
     $self->connected || $self->connect;
 
     my $eval_error = eval { $self->object->put( $local, $remote ); };
-    ok( $eval_error, $test );
+    $tb->ok( $eval_error, $test );
 }
 
 sub cannot_put {
@@ -156,7 +138,7 @@ sub cannot_put {
     $self->connected || $self->connect;
 
     my $eval_error = eval { $self->object->put( $local, $remote ); };
-    ok( !$eval_error, $test );
+    $tb->ok( !$eval_error, $test );
 }
 
 sub can_ls {
@@ -164,7 +146,7 @@ sub can_ls {
     my $tb = $CLASS->builder;
     $self->connected || $self->connect;
     my $eval_error = eval { $self->object->ls($path); };
-    ok( $eval_error, $test );
+    $tb->ok( $eval_error, $test );
 }
 
 sub cannot_ls {
@@ -172,7 +154,7 @@ sub cannot_ls {
     my $tb = $CLASS->builder;
     $self->connected || $self->connect;
     my $eval_error = eval { $self->object->ls($path); };
-    ok( !$eval_error, $test );
+    $tb->ok( !$eval_error, $test );
 }
 
 no Moose;
