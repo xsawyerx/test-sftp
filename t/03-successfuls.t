@@ -88,14 +88,26 @@ SKIP: {
             my $file_util = File::Util->new;
             $file_util->touch($random_file);
 
-            $sftp->can_put( $random_file, $random_file, 'Trying to upload to good location' );
-            $sftp->can_get( $random_file, "$random_file.tmp", 'Trying to get a file' );
+            $sftp->can_put(
+                $random_file,
+                $random_file,
+                'Trying to upload to good location',
+            );
 
-            # this is dangerous, we need to finish some stuff before allowing people to run all these tests
+            $sftp->can_get(
+                $random_file,
+                "$random_file.tmp",
+                'Trying to get a file',
+            );
+
+            # this is dangerous
+            # we need to finish some stuff
+            # before allowing people to run all these tests
             $sftp->object->remove( $random_file );
 
             # we do not need this file anymore
-            # TODO: if in the process of getting a file we overwritten that file, we will be accidently removing it
+            # TODO: if in the process of getting a file
+            # we overwritten that file, we will be accidently removing it
             # so we need to check if it is so
             unlink $random_file, "$random_file.tmp";
         };
@@ -107,11 +119,19 @@ SKIP: {
         $sftp->can_ls( '/', 'Trying to do ls'   );
         $sftp->cannot_ls( $bad_path, 'Trying to fail ls' );
 
-        $sftp->cannot_put( $random_file, $bad_path, 'Trying to upload to bad location'  );
+        $sftp->cannot_put(
+            $random_file,
+            $bad_path,
+            'Trying to upload to bad location',
+        );
+
         $sftp->cannot_get( $bad_path, '/', 'Trying to get a nonexistent file' );
 
         $full_status = 'No such file';
-        $sftp->is_status( $full_status, 'Checking SFTP nonexistent path complete status' );
+        $sftp->is_status(
+            $full_status,
+            'Checking SFTP nonexistent path complete status',
+        );
     }
 }
 
