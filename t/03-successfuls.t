@@ -89,8 +89,7 @@ SKIP: {
             $file_util->touch($random_file);
 
             $sftp->can_put( $random_file, $random_file, 'Trying to upload to good location' );
-            print "Trying to get $random_file\n";
-            $sftp->can_get( $random_file, '.', 'Trying to get a file' );
+            $sftp->can_get( $random_file, "$random_file.tmp", 'Trying to get a file' );
 
             # this is dangerous, we need to finish some stuff before allowing people to run all these tests
             $sftp->object->remove( $random_file );
@@ -98,7 +97,7 @@ SKIP: {
             # we do not need this file anymore
             # TODO: if in the process of getting a file we overwritten that file, we will be accidently removing it
             # so we need to check if it is so
-            unlink $random_file;
+            unlink $random_file, "$random_file.tmp";
         };
 
         my $random_file = rand 99999;
