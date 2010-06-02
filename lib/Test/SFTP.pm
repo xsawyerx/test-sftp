@@ -7,14 +7,13 @@ use Carp;
 use Moose;
 use English '-no_match_vars';
 use Net::SFTP::Foreign;
-#use Net::SFTP;
 use Test::More;
 use Test::Builder;
 use namespace::autoclean;
 
-our $VERSION = '0.04';
-
 use parent 'Test::Builder::Module';
+
+our $VERSION = '0.04';
 
 # variables for the connection
 has 'host'     => ( is => 'ro', isa => 'Str', required => 1 );
@@ -38,6 +37,8 @@ has 'connected'    => ( is => 'rw', isa => 'Bool', default => 0 );
 has 'auto_connect' => ( is => 'rw', isa => 'Bool', default => 1 );
 
 has 'timeout'      => ( is => 'ro', isa => 'Int' );
+
+my $CLASS = __PACKAGE__;
 
 sub _build_object {
     my $self = shift;
@@ -73,92 +74,105 @@ sub BUILD {
 
 sub can_connect {
     my ( $self, $test ) = @_;
+    my $tb = $CLASS->builder;
+
     $self->object( $self->_build_object );
-    ok( not $self->object->error, $test );
-    return 0;
+    $tb->ok( ! $self->object->error(), $test );
 }
 
 sub cannot_connect {
     my ( $self, $test ) = @_;
+    my $tb = $CLASS->builder;
+
     $self->object( $self->_build_object );;
-    ok( $self->object->error, $test );
-    return 0;
+    $tb->ok( $self->object->error, $test );
 }
 
 sub is_status {
     my ( $self, $status, $test ) = @_;
+    my $tb    = $CLASS->builder;
     my $SPACE = q{ };
+
     is( ( join $SPACE, ( $self->object->status ) ), $status, $test );
-    return 0;
 }
 
 sub is_status_number {
     my ( $self, $status, $test ) = @_;
+    my $tb = $CLASS->builder;
+
     is( ( $self->object->status )[0], $status, $test );
-    return 0;
 }
 
 sub is_status_string {
     my ( $self, $status, $test ) = @_;
+    my $tb = $CLASS->builder;
+
     is( ( $self->object->status )[1], $status, $test );
-    return 0;
 }
 
 sub can_get {
     my ( $self, $local, $remote, $test ) = @_;
+    my $tb    = $CLASS->builder;
     my $EMPTY = q{};
+
     $self->connected || $self->connect;
+
     if ($test) {
         ok( $self->object->get( $local, $remote ) eq $EMPTY, $test );
     } else {
         $test = $remote;
         ok( $self->object->get($local) eq $EMPTY, $test );
     }
-    return 0;
 }
 
 sub cannot_get {
     my ( $self, $local, $remote, $test ) = @_;
+    my $tb = $CLASS->builder;
+
     $self->connected || $self->connect;
+
     if ($test) {
         ok( !$self->object->get( $local, $remote ), $test );
     } else {
         $test = $remote;
         ok( !$self->object->get($local), $test );
     }
-    return 0;
 }
 
 sub can_put {
     my ( $self, $local, $remote, $test ) = @_;
+    my $tb = $CLASS->builder;
+
     $self->connected || $self->connect;
+
     my $eval_error = eval { $self->object->put( $local, $remote ); };
     ok( $eval_error, $test );
-    return 0;
 }
 
 sub cannot_put {
     my ( $self, $local, $remote, $test ) = @_;
+    my $tb = $CLASS->builder;
+
     $self->connected || $self->connect;
+
     my $eval_error = eval { $self->object->put( $local, $remote ); };
     ok( !$eval_error, $test );
-    return 0;
 }
 
 sub can_ls {
     my ( $self, $path, $test ) = @_;
+    my $tb = $CLASS->builder;
     $self->connected || $self->connect;
     my $eval_error = eval { $self->object->ls($path); };
     ok( $eval_error, $test );
-    return 0;
 }
 
 sub cannot_ls {
     my ( $self, $path, $test ) = @_;
+    my $tb = $CLASS->builder;
     $self->connected || $self->connect;
     my $eval_error = eval { $self->object->ls($path); };
     ok( !$eval_error, $test );
-    return 0;
 }
 
 no Moose;
