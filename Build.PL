@@ -18,11 +18,9 @@ my $builder = Module::Build->new(
     requires => {
         'Carp'                 => 0,
         'perl'                 => 5.006,
-        'parent'               => 0,
-        'Test::More'           => 0.78,
-        'Test::Builder'        => 0,
         'Moose'                => 0.63,
-        'Net::SFTP'            => 0.10,
+        'parent'               => 0,
+        'Test::Builder'        => 0,
         'Net::SFTP::Foreign'   => 0,
         'namespace::autoclean' => 0,
     },
