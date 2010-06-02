@@ -9,9 +9,10 @@ my $builder = Module::Build->new(
     dist_author         => q{Sawyer X <xsawyerx@cpan.org>},
     dist_version_from   => 'lib/Test/SFTP.pm',
     build_requires => {
-        'Test::More' => 0,
-        'IO::Prompt' => '0.99.4',
-        'English'    => 1.02,
+        'Test::More'         => 0,
+        'English'            => 1.02,
+        'Term::ReadLine'     => 0,
+        'Term::ReadPassword' => 0,
     },
 
     requires => {
