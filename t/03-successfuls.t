@@ -1,16 +1,14 @@
 #!perl
-# we can't use -T because Net::SSH::Perl has a problem
-# dammit
 
 # we're testing if we can connect
+use strict;
+use warnings;
+
 use English '-no_match_vars';
 use Test::More tests => 14;
 use Test::SFTP;
 use Term::ReadLine;
 use Term::ReadPassword;
-
-use strict;
-use warnings;
 
 SKIP: {
     eval "getpwuid $REAL_USER_ID";
