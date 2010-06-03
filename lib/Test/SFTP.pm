@@ -26,7 +26,7 @@ has 'more'     => ( is => 'ro', isa => 'ArrayRef'           );
 # this holds the object itself. that way, users can do:
 # $t_sftp->object->get() in a raw manner if they want
 has 'object' => (
-    is         => 'ro',
+    is         => 'rw',
     isa        => 'Net::SFTP::Foreign',
     lazy_build => 1,
 );
