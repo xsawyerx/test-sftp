@@ -323,6 +323,10 @@ nonexistence of files or folders.
 
 L<Moose>
 
+L<Expect>
+
+L<IO::Pty>
+
 L<Net::SFTP::Foreign>.
 
 L<Test::Builder>
