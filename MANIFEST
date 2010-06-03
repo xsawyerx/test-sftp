@@ -13,3 +13,4 @@ t/03-successfuls.t
 t/pod-coverage.t
 t/pod.t
 TODO
+LICENSE

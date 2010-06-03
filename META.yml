@@ -1,24 +1,15 @@
 ---
-abstract: 'An object to help test Net::SFTP'
+name: Test-SFTP
+version: 1.05
 author:
   - 'Sawyer X <xsawyerx@cpan.org>'
+abstract: An object to help test SFTPs
+license: perl
 build_requires:
   English: 1.02
   Term::ReadLine: 0
   Term::ReadPassword: 0
   Test::More: 0
-configure_requires:
-  Module::Build: 0.36
-generated_by: 'Module::Build version 0.3607'
-license: perl
-meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
-name: Test-SFTP
-provides:
-  Test::SFTP:
-    file: lib/Test/SFTP.pm
-    version: 1.05
 requires:
   Carp: 0
   Moose: 0.63
@@ -27,6 +18,15 @@ requires:
   namespace::autoclean: 0
   parent: 0
   perl: 5.006
+configure_requires:
+  Module::Build: 0.340201
+generated_by: Module::Build version 0.340201
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+provides:
+  Test::SFTP:
+    file: lib/Test/SFTP.pm
+    version: 1.05
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.04
