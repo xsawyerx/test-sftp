@@ -16,12 +16,13 @@ SKIP: {
         skip "no getpwuid", 14;
     }
 
+    my $term     = Term::ReadLine->new('test_term');
+    my $host     = 'localhost';
+    my $timeout  = 10;
     my $SPACE    = q{ };
     my $EMPTY    = q{};
-    my $timeout  = 10;
-    my $host     = 'localhost';
+
     my $username = getpwuid $REAL_USER_ID || $EMPTY;
-    my $term     = Term::ReadLine->new('test_term');
 
     my ( $password, $test, $prompt );
     my ( $full_status, $status_number, $status_string );
@@ -73,7 +74,7 @@ SKIP: {
         $sftp->is_error(  $status_number, 'Checking SFTP error status'  );
 
         SKIP: {
-            if ( $ENV{'TEST_SFTP_DANG'} ) {
+            if ( ! $ENV{'TEST_SFTP_DANG'} ) {
                 skip "Dangerous tests only tests if TEST_SFTP_DANG is set", 2;
             }
 
