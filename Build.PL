@@ -25,8 +25,10 @@ my $builder = Module::Build->new(
         'namespace::autoclean' => 0,
     },
 
-    add_to_cleanup      => [ 'Test-SFTP-*' ],
+    add_to_cleanup     => [ 'Test-SFTP-*' ],
     create_makefile_pl => 'traditional',
+    create_license     => 1,
+    create_readme      => 1,
 );
 
 $builder->create_build_script();
