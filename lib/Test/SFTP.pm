@@ -319,6 +319,10 @@ existence of files or folders.
 Checks whether we're unable to ls a folder or file. Can be used to check the
 nonexistence of files or folders.
 
+=head2 BUILD
+
+Internal L<Moose> function used to initialize the object. Do not touch. :)
+
 =head1 DEPENDENCIES
 
 L<Moose>
