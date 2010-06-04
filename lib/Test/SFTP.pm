@@ -12,7 +12,7 @@ use namespace::autoclean;
 
 use parent 'Test::Builder::Module';
 
-our $VERSION = '1.05';
+our $VERSION = '1.04_01';
 
 # variables for the connection
 has 'host'     => ( is => 'ro', isa => 'Str', required => 1 );

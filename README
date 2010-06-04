@@ -132,8 +132,15 @@ SUBROUTINES/METHODS
     Checks whether we're unable to ls a folder or file. Can be used to check
     the nonexistence of files or folders.
 
+  BUILD
+    Internal Moose function used to initialize the object. Do not touch. :)
+
 DEPENDENCIES
     Moose
+
+    Expect
+
+    IO::Pty
 
     Net::SFTP::Foreign.
 
