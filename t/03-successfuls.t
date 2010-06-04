@@ -13,7 +13,7 @@ use Term::ReadPassword;
 SKIP: {
     eval "getpwuid $REAL_USER_ID";
     if ( $EVAL_ERROR ) {
-        skip "no getpwuid", 14;
+        skip "no getpwuid", 11;
     }
 
     my $term     = Term::ReadLine->new('test_term');
@@ -35,19 +35,15 @@ SKIP: {
 
             alarm $timeout;
 
-            print STDERR "\nI need your help for some tests.\n"              .
-                         "Enter 'q' to quit the tests, or wait $timeout "    .
-                         "seconds for me to just continue without testing\n" .
-                         "You can press [enter] if you want to help me with" .
-                         " this and test this module\n";
-            $test = $term->readline('So? ');
+            my $msg = "Press [enter] to help me test or wait $timeout seconds";
+            $test = $term->readline($msg);
             chomp $test;
 
             alarm 0;
         };
 
         if ( $EVAL_ERROR eq "input failed\n" || $test eq 'q' ) {
-            skip "Alright, nevermind...\n", 14;
+            skip "Alright, nevermind...\n", 11;
         }
 
         $prompt = $term->readline("SSH/SFTP host to test [$host]: ");
