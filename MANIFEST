@@ -1,6 +1,8 @@
 Build.PL
 Changes
+examples/plain.t
 lib/Test/SFTP.pm
+LICENSE
 Makefile.PL
 MANIFEST
 MANIFEST.SKIP
@@ -12,5 +14,3 @@ t/02-failures.t
 t/03-successfuls.t
 t/pod-coverage.t
 t/pod.t
-TODO
-LICENSE
