@@ -345,7 +345,8 @@ Sawyer X, C<< <xsawyerx at cpan.org> >>
 
 =head1 DIAGNOSTICS
 
-You can use the B<object> attribute to access the I<Net::SFTP> object directly.
+You can use the B<object> attribute to access the I<Net::SFTP::Foreign> object
+directly.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
@@ -364,13 +365,13 @@ TEST_SFTP_DANG.
 
 =head1 INCOMPATIBILITIES
 
-This module should be incompatible with taint (-T), because it use I<Net::SFTP>
-that utilizes I<Net::SSH::Perl> that does not pass tainted mode.
+L<Net::SFTP::Foreign> does not support Windows. If you're using Windows, you
+have bigger problems. :)
 
 =head1 BUGS AND LIMITATIONS
 
-This module will have the same limitations that exist for I<Net::SFTP>. Perhaps
-more.
+This module will have the same limitations that exist for
+I<Net::SFTP::Foreign>. Perhaps more.
 
 Please report any bugs or feature requests to C<bug-test-sftp at rt.cpan.org>,
 or through the web interface at
