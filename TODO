@@ -10,13 +10,9 @@ Organized according to how soon I think I will implement these.
     - Add testing for can_get and cannot_get using $remote_path as well
     - Check if we're uploading a file to where it really is right now, if so -
       prevent it
-    - Set timeout for every action?
     - Add SKIP {} for connection-requiring methods
-    - Provide "examples/" folder.
-    - Check kwalitee issues
     - Check on functions that need the object is the object exists, fail
       automatically if it doesn't, with proper diag()
-    - After running prove -Ilib t/03-successfuls, the prompt is still caught.
 
 * Not any time soon, if at all:
     - Add tests for every possible connection success or fail (wrong host,
