@@ -12,7 +12,7 @@ use namespace::autoclean;
 
 use parent 'Test::Builder::Module';
 
-our $VERSION = '1.05';
+our $VERSION = '1.06';
 
 # variables for the connection
 has 'host'     => ( is => 'ro', isa => 'Str', required => 1 );
@@ -184,7 +184,7 @@ Test::SFTP - An object to help test SFTPs
 
 =head1 VERSION
 
-This describes Test::SFTP 1.05.
+This describes Test::SFTP 1.06.
 
 =head1 DESCRIPTION
 
