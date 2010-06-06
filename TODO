@@ -1,10 +1,8 @@
 Organized according to how soon I think I will implement these.
 
 ** REWRITE **
-    - Add port option
     - Next Net::SFTP::Foreign will support either redirecting output to
       /dev/null or a "quiet" option. This should be used.
-    - Taint mode for tests?
 
 * Upcoming versions:
     - Add testing for can_get and cannot_get using $remote_path as well
