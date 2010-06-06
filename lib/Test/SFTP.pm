@@ -20,6 +20,7 @@ has 'user'     => ( is => 'ro', isa => 'Str'                );
 has 'password' => ( is => 'ro', isa => 'Str'                );
 
 has 'debug'    => ( is => 'ro', isa => 'Int', default => 0  );
+has 'port'     => ( is => 'ro', isa => 'Int'                );
 has 'timeout'  => ( is => 'ro', isa => 'Int'                );
 has 'more'     => ( is => 'ro', isa => 'ArrayRef'           );
 
@@ -223,6 +224,10 @@ Password for the username you're connecting with.
 
 If you do not specify this explicitly, it will try other connection methods
 such as SSH keys.
+
+=head2 port
+
+Port you're connecting to.
 
 =head2 debug
 
