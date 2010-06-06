@@ -20,7 +20,7 @@ SYNOPSIS
         );
 
 VERSION
-    This describes Test::SFTP 1.05.
+    This describes Test::SFTP 1.06.
 
 DESCRIPTION
     Unlike most testing frameworks, *Test::SFTP* provides an object oriented
@@ -55,6 +55,9 @@ ATTRIBUTES
 
     If you do not specify this explicitly, it will try other connection
     methods such as SSH keys.
+
+  port
+    Port you're connecting to.
 
   debug
     This flag turns on verbose for *Net::SFTP::Foreign*.
@@ -154,8 +157,8 @@ AUTHOR
     Sawyer X, "<xsawyerx at cpan.org>"
 
 DIAGNOSTICS
-    You can use the object attribute to access the *Net::SFTP* object
-    directly.
+    You can use the object attribute to access the *Net::SFTP::Foreign*
+    object directly.
 
 CONFIGURATION AND ENVIRONMENT
     Some tests in the module require creating and removing files. As long as
@@ -173,13 +176,12 @@ CONFIGURATION AND ENVIRONMENT
     TEST_SFTP_DANG.
 
 INCOMPATIBILITIES
-    This module should be incompatible with taint (-T), because it use
-    *Net::SFTP* that utilizes *Net::SSH::Perl* that does not pass tainted
-    mode.
+    Net::SFTP::Foreign does not support Windows. If you're using Windows,
+    you have bigger problems. :)
 
 BUGS AND LIMITATIONS
-    This module will have the same limitations that exist for *Net::SFTP*.
-    Perhaps more.
+    This module will have the same limitations that exist for
+    *Net::SFTP::Foreign*. Perhaps more.
 
     Please report any bugs or feature requests to "bug-test-sftp at
     rt.cpan.org", or through the web interface at
