@@ -20,7 +20,7 @@ SYNOPSIS
         );
 
 VERSION
-    This describes Test::SFTP 1.07.
+    This describes Test::SFTP 1.08.
 
 DESCRIPTION
     Unlike most testing frameworks, *Test::SFTP* provides an object oriented
@@ -177,9 +177,12 @@ CONFIGURATION AND ENVIRONMENT
 
 INCOMPATIBILITIES
     The default backend in Net::SFTP::Foreign uses Expect for password
-    authentication which only works on Windows using Cygwin Perl.
+    authentication. Unfortunately, on windows, it only works using Cygwin
+    Perl.
 
-    Use *plink* instead of OpenSSH SSH client or the Net_SSH2 backend.
+    So, if you're using Windows and need password authentication, you might
+    want to use *plink* instead of OpenSSH SSH client or the Net_SSH2
+    backend.
 
 BUGS AND LIMITATIONS
     This module will have the same limitations that exist for
@@ -215,7 +218,7 @@ SUPPORT
         <http://search.cpan.org/dist/Test-SFTP/>
 
 ACKNOWLEDGEMENTS
-    Salvador Fandiño Garcia for Net::SFTP::Foreign, Net::OpenSSH, being a
+    Salvador Fandiño Garc�a for Net::SFTP::Foreign, Net::OpenSSH, being a
     responsive dedicated author and a really nice guy! :)
 
 LICENSE AND COPYRIGHT

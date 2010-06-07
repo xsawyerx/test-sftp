@@ -18,7 +18,7 @@ name: Test-SFTP
 provides:
   Test::SFTP:
     file: lib/Test/SFTP.pm
-    version: 1.07
+    version: 1.08
 requires:
   Carp: 0
   Expect: 0
@@ -31,4 +31,4 @@ requires:
   perl: 5.006
 resources:
   license: http://dev.perl.org/licenses/
-version: 1.07
+version: 1.08
