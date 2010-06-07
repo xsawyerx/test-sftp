@@ -12,7 +12,7 @@ use namespace::autoclean;
 
 use parent 'Test::Builder::Module';
 
-our $VERSION = '1.07';
+our $VERSION = '1.08';
 
 # variables for the connection
 has 'host'     => ( is => 'ro', isa => 'Str', required => 1 );
@@ -184,7 +184,7 @@ Test::SFTP - An object to help test SFTPs
 
 =head1 VERSION
 
-This describes Test::SFTP 1.07.
+This describes Test::SFTP 1.08.
 
 =head1 DESCRIPTION
 
@@ -371,9 +371,10 @@ TEST_SFTP_DANG.
 =head1 INCOMPATIBILITIES
 
 The default backend in L<Net::SFTP::Foreign> uses L<Expect> for password
-authentication which only works on Windows using Cygwin Perl.
+authentication. Unfortunately, on windows, it only works using Cygwin Perl.
 
-Use I<plink> instead of OpenSSH SSH client or the Net_SSH2 backend.
+So, if you're using Windows and need password authentication, you might want to
+use I<plink> instead of OpenSSH SSH client or the Net_SSH2 backend.
 
 =head1 BUGS AND LIMITATIONS
 
@@ -416,7 +417,7 @@ L<http://search.cpan.org/dist/Test-SFTP/>
 
 =head1 ACKNOWLEDGEMENTS
 
-Salvador Fandiño Garcia for L<Net::SFTP::Foreign>, L<Net::OpenSSH>, being a
+Salvador Fandiño García for L<Net::SFTP::Foreign>, L<Net::OpenSSH>, being a
 responsive dedicated author and a really nice guy! :)
 
 =head1 LICENSE AND COPYRIGHT
