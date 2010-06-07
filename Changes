@@ -1,5 +1,9 @@
 Revision history for Test::SFTP
 
+1.08        07.06.10
+            - If anything, last version made it even more confusing! It is now
+              fixed
+
 1.07        07.06.10
             - RT #58199 - Sorry Salvador! :)
 
