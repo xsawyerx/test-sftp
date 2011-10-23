@@ -1,8 +1,7 @@
-package Test::SFTP;
-# ABSTRACT: An object to help test SFTPs
-
 use strict;
 use warnings;
+package Test::SFTP;
+# ABSTRACT: An object to help test SFTPs
 
 use Carp;
 use Moose;
