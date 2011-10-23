@@ -124,9 +124,8 @@ SKIP: {
 
         $sftp->cannot_get( $bad_path, '/', 'Trying to get a nonexistent file' );
 
-        $full_status = 'No such file';
-        $sftp->is_status(
-            $full_status,
+        ok(
+            $sftp->object->status =~ /^(?:No such file|File not found)$/,
             'Checking SFTP nonexistent path complete status',
         );
     }
