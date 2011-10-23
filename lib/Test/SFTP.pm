@@ -1,4 +1,5 @@
 package Test::SFTP;
+# ABSTRACT: An object to help test SFTPs
 
 use strict;
 use warnings;
@@ -11,8 +12,6 @@ use Net::SFTP::Foreign;
 use namespace::autoclean;
 
 use parent 'Test::Builder::Module';
-
-our $VERSION = '1.08';
 
 # variables for the connection
 has 'host'     => ( is => 'ro', isa => 'Str', required => 1 );
@@ -159,10 +158,6 @@ no Moose;
 
 __END__
 
-=head1 NAME
-
-Test::SFTP - An object to help test SFTPs
-
 =head1 SYNOPSIS
 
     use Test::SFTP;
@@ -181,10 +176,6 @@ Test::SFTP - An object to help test SFTPs
         $remote_path,
         "Trying to copy $local_path to $remote_path",
     );
-
-=head1 VERSION
-
-This describes Test::SFTP 1.08.
 
 =head1 DESCRIPTION
 
@@ -344,10 +335,6 @@ L<namespace::autoclean>
 
 L<parent>
 
-=head1 AUTHOR
-
-Sawyer X, C<< <xsawyerx at cpan.org> >>
-
 =head1 DIAGNOSTICS
 
 You can use the B<object> attribute to access the I<Net::SFTP::Foreign> object
@@ -419,11 +406,4 @@ L<http://search.cpan.org/dist/Test-SFTP/>
 
 Salvador Fandiño García for L<Net::SFTP::Foreign>, L<Net::OpenSSH>, being a
 responsive dedicated author and a really nice guy! :)
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2009-2010 Sawyer X, all rights reserved.
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
 
