@@ -1,5 +1,8 @@
 Revision history for Test::SFTP
 
+1.10        25.10.11
+            - Fix a lot of failed tests by checking for available modules.
+
 1.09        23.10.11
             - Fixed RT #71873 (thanks to Montgomery Conner).
             - Moved to Dist::Zilla, finally.
