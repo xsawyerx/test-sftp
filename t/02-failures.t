@@ -1,11 +1,19 @@
 #!perl
 
 # we're testing if we can connect
-use Test::More tests => 3;
+use Test::More;
 use Test::SFTP;
 
 use strict;
 use warnings;
+
+eval 'use Expect';
+plan skip_all => 'Expect required for this test' if $@;
+
+eval 'use IO::Pty';
+plan skip_all => 'IO::Pty required for this test' if $@;
+
+plan tests => 3;
 
 my $EMPTY    = q{};
 $ENV{'HOME'} = $EMPTY;
